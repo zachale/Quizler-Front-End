@@ -6,7 +6,18 @@ import React, {useState} from 'react';
 const apiurl = "http://127.0.0.1:3000/questions/random"
 const checkQuestion = "http://127.0.0.1:3000/questions/submit"
 
-
+function SubmitAnswerFrom({question}){
+  
+  return (
+    <>
+      <form action={checkQuestion} target='_blank' method="GET">
+        <input type="hidden"  id='question' name='question' value={question}></input>
+        <input type="text" id='answer' name='answer'></input>
+        <input type="submit"></input>
+      </form>
+    </>
+  )
+}
 
 
 function App() {
@@ -35,10 +46,6 @@ function App() {
   
   }
 
-  if( content == null){
-    getQuestion()
-  }
-
   return (
     <div className="App">
         
@@ -46,11 +53,7 @@ function App() {
         
         <div>
           <h1>{content} = ?</h1>
-          <form action={checkQuestion} target='_blank'>
-            <input type="hidden" value={content}></input>
-            <input type="text" id='question'></input>
-            <input type="submit" id='answer'></input>
-          </form>
+          <SubmitAnswerFrom question={content}/>
         </div>
         
 
