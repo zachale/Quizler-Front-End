@@ -3,14 +3,14 @@ import './App.css';
 import React, {useState} from 'react';
 
 
-const apiurl = "http://127.0.0.1:3000/questions/random"
+const getQuestion = "http://127.0.0.1:3000/questions/random"
 const checkQuestion = "http://127.0.0.1:3000/questions/submit"
 
-function SubmitAnswerFrom({question}){
+function SubmitAnswerFrom({question, onSubmit}){
   
   return (
     <>
-      <form action={checkQuestion} target='_blank' method="GET">
+      <form onSubmit={onSubmit} method="GET">
         <input type="hidden"  id='question' name='question' value={question}></input>
         <input type="text" id='answer' name='answer'></input>
         <input type="submit"></input>
@@ -19,44 +19,71 @@ function SubmitAnswerFrom({question}){
   )
 }
 
+async function getJsonResponse(url) {
+
+
+  try {
+    const response = await fetch(url);
+
+    if(!response.ok) {
+      throw new Error("Network response was not ok")
+    }
+
+    const value = await response.json()
+    return value
+    
+    
+  } catch (error) {
+    console.error("Error:", error);
+  } 
+
+}
+
 
 function App() {
-  const [content, setContent] = useState('')
-  
-  if(content === ''){
-    getQuestion()
+  const [question, setQuestion] = useState('')
+  const [validAnswer, setValidAnswer] = useState('')
+  const [score, setScore] = useState(0)
+
+  async function updateQuestion(e){
+    await getJsonResponse(getQuestion).then( promise => {setQuestion(promise.message)})
   }
 
-  function getQuestion () {
+  async function updateAnswer(e){
+    e.preventDefault()
 
-    fetch(apiurl)
-    .then(response => {
-      if(!response.ok) {
-        throw new Error("Network response was not ok")
-      }
-      response.json().then( json => {setContent(json.message)})
-    }) 
-    .then(data => { 
-      console.log(String(data))
-    })
-    .catch(error => {
-      console.error("Error:", error);
-      setContent(String(error));
-    })
-  
+    const query = encodeURIComponent(e.target.question.value)
+    const url = checkQuestion + '?question=' + query + '&answer=' + e.target.answer.value 
+    // This is so primitive
+    // This is definitely not the optimal way to do this
+    // I couldn't find the clean way
+
+    //submit the question and process the result
+    await getJsonResponse(url)
+      .then( promise => {setValidAnswer(value => value = promise.message, handleAnswerCheck(promise.message))})
+  }
+
+  function handleAnswerCheck(e = null){
+    setValidAnswer(e)
+    if(validAnswer){
+      setScore(score.valueOf() + 1)
+      updateQuestion()
+      console.log("it was true!")
+    }
+    console.log("answer should be " + e + " " + validAnswer)
+  }
+
+  if(question === ''){
+    updateQuestion()
   }
 
   return (
-    <div className="App">
-        
-        <button onClick={getQuestion}>get question</button>
-        
+    <div className="App">      
         <div>
-          <h1>{content} = ?</h1>
-          <SubmitAnswerFrom question={content}/>
-        </div>
-        
-
+          <h1>{question} = ?</h1>
+          <SubmitAnswerFrom question={question} onSubmit={updateAnswer}/>
+          <h1>{String(score)}</h1>
+        </div> 
     </div>
   );
 }
