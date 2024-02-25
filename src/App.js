@@ -1,6 +1,7 @@
 
 import './App.css';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import Timer from './Timer';
 
 
 const getQuestion = "http://127.0.0.1:3000/questions/random"
@@ -20,27 +21,7 @@ async function getJsonResponse(url) {
   } 
 
 }
-function CountDown(){
-  const [width,setWidth] = useState(100)
-  const [fill,setFill] = useState("rgb(150,0,10")
-  const [intervalID, setIntervalId] = useState(0)
 
-  useEffect( () => setIntervalId(setInterval(updateCountDown, 1000)), [])
-
-  function updateCountDown(){
-    console.log(width)
-    setWidth(width.valueOf() - 1)
-  }
-
-  if (width < 0){
-    clearInterval(intervalID)
-  }
-  
-  return (
-   <svg width="100%" height="70" xmlns="http://www.w3.org/2000/svg">
-    <rect className='timer' width={String(width) + '%'} height="100%" x="0" y="0" rx="0" ry="0" fill={fill} />
-  </svg>)
-}
 
 function SubmitAnswerFrom({question, onSubmit}){
 
@@ -111,7 +92,7 @@ function App() {
   return (
     <div className="App">      
         <div>
-          <CountDown/>
+          <Timer/>
           <h1>{question} = ?</h1>
           <SubmitAnswerFrom question={question} onSubmit={updateAnswer}/>
           <h1>{String(score)}</h1>
