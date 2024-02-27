@@ -13,5 +13,14 @@ code {
 }
 
 rect {
-  transition: width .01s ease-in;
+  transition: width 0.1s ease-in-out;
+}
+
+.popUpContainer {
+  background-color: rgb(255, 244, 218);
+  width:50vw;
+  height:50vh;
+  border-width: 10px;
+  border-radius: 5vw;
+  text-align: center;
 }
