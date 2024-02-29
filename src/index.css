@@ -30,26 +30,65 @@ rect {
 }
 
 .submitAnswer {
+  border-style: inset;
   border-radius: 5px;
+  border-color: black !important;
+  border-width: 2px;
   width:45%;
   height:100%;
   margin-right: 2%;
+  
+  padding: 10px;
+  transition: border-color 1s ease-in-out;
+}
+.submitAnswer:focus {
+  transition: border-color 1s ease-in-out;
+  border-radius: 5px;
+  border-color: black;
 }
 
 .submitButton {
   border-radius: 5px;
-  border: black;
+  border-color: black;
   border-width: 2px;
   width:50px;
   height: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 5px;
+  padding-left: 5px;
   background-color: white;
-  transition: background-color 1s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .checkMark {
   width: 100%;
+  margin: 0px;
+  stroke: black;
+  transition: stroke 0.2s ease-in-out;
 }
 
-.submitButton :hover {
-  background-color: #d2f9c4;
+.submitButton:hover .checkMark{
+
+  stroke: white;
+  
+}
+
+
+.submitButton:hover {
+
+  background-color: #72cf50;
+  stroke-width: +10px;
+  
+}
+
+.highScore {
+  width: 50%;
+  display: block;
+  transition: rotate 0.2s ease-in-out;
+}
+
+.highScore:hover{
+  
+  rotate: 3deg;
 }

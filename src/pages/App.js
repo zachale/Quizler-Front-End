@@ -146,7 +146,7 @@ function App() {
           <p>{notif}</p>
           <SubmitAnswerFrom question={question} onSubmit={updateAnswer}/>
           <TestPopUp score={score} onExit={timeOut}/>
-          <h1>High Score: {highScore} 😎</h1>
+          <div><h1 className='highScore'>High Score: {highScore} 😎</h1></div>
         </div> 
     </div>
   );
