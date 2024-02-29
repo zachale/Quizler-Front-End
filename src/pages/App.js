@@ -1,7 +1,7 @@
 
-import './App.css';
+import '../App.css';
 import React, {useEffect, useState} from 'react';
-import Timer from './Timer';
+import Timer from '../Timer';
 import Popup from 'reactjs-popup'
 
 
@@ -33,8 +33,13 @@ function SubmitAnswerFrom({question, onSubmit}){
     <>
       <form onSubmit={handleSubmit} method="GET">
         <input type="hidden"  id='question' name='question' value={question}></input>
-        <input type="text" id='answer' name='answer' value={answer} onChange={(e) => setAnswer(e.target.value)}></input>
-        <input type="submit"></input>
+        <input className="submitAnswer" type="text" id='answer' name='answer' value={answer} onChange={(e) => setAnswer(e.target.value)}></input>
+        <button type="submit" className='submitButton'>
+          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check checkMark" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 12l5 5l10 -10" />
+          </svg>
+        </button>
       </form>
     </>
   )
@@ -50,12 +55,12 @@ function TestPopUp ({onExit, score}) {
   return (
     <Popup modal trigger={<button> Trigger</button>} position="right center">
     <div className='popUpContainer'>
-      <h1>game over... 😔👎</h1>
+      <h1>game over... 😔</h1>
       <h1>{score}</h1>
       <div>
         <button onClick={()=>{
           onExit()
-        }}>retry!</button>
+        }}>retry🔁</button>
       </div>
     </div>
   </Popup>
@@ -66,11 +71,10 @@ function TestPopUp ({onExit, score}) {
 
 function App() {
   const [question, setQuestion] = useState('')
-  const [validAnswer, setValidAnswer] = useState('')
   const [score, setScore] = useState(0)
   const [notif, setNotif] = useState('')
   const [key, setKey] = useState(0)
-  const [scores, setScores] = useState([])
+  const [highScore, setHighScore] = useState(0)
 
   async function updateQuestion(e){
     await getJsonResponse(getQuestion)
@@ -94,7 +98,6 @@ function App() {
   }
 
   function handleAnswerCheck(e = null){
-    setValidAnswer(e)
 
     if(e == null){
       setNotif("Error!")
@@ -114,8 +117,9 @@ function App() {
 
   function timeOut(){
 
-    if(score !== 0){
-      setScores((scores)=>[...scores, score])
+    if(score > highScore){
+      setHighScore(score)
+      document.cookie = "hs=" + String(score)
     }
     
     setKey(key+1)
@@ -124,26 +128,25 @@ function App() {
 
   }
 
-  function HighScores() {
-    const list = scores.map((item) => { return (<li>{item}</li>)})
-    return (<lu>{list}</lu>)
-  }
 
-  // useEffect(() => {
-  //   const name = window.prompt("Whats your Name? 😎")
-  //   document.cookie = "name="+name
-  // },[])
+  useEffect(() => {
+    if(document.cookie.includes("hs")){
+      var cookie = document.cookie
+      const parameters = cookie.split('=')
+      setHighScore(parameters[1])
+    }
+  },[])
 
   return (
     <div className="App">  
         <div>
           <Timer onTimeOut={timeOut} score={score}/>
           <h1>{question} = ?</h1>
-          <SubmitAnswerFrom question={question} onSubmit={updateAnswer}/>
           <h1>{String(score)}</h1>
           <p>{notif}</p>
-          <HighScores/>
+          <SubmitAnswerFrom question={question} onSubmit={updateAnswer}/>
           <TestPopUp score={score} onExit={timeOut}/>
+          <h1>High Score: {highScore} 😎</h1>
         </div> 
     </div>
   );

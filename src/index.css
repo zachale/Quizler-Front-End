@@ -17,10 +17,39 @@ rect {
 }
 
 .popUpContainer {
-  background-color: rgb(255, 244, 218);
+  background-color: #92ab89;
   width:50vw;
   height:50vh;
   border-width: 10px;
   border-radius: 5vw;
   text-align: center;
+}
+
+.popUpContent {
+  margin-top:10vh;
+}
+
+.submitAnswer {
+  border-radius: 5px;
+  width:45%;
+  height:100%;
+  margin-right: 2%;
+}
+
+.submitButton {
+  border-radius: 5px;
+  border: black;
+  border-width: 2px;
+  width:50px;
+  height: 100%;
+  background-color: white;
+  transition: background-color 1s ease-in-out;
+}
+
+.checkMark {
+  width: 100%;
+}
+
+.submitButton :hover {
+  background-color: #d2f9c4;
 }

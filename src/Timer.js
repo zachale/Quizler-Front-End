@@ -41,9 +41,7 @@ class Timer extends React.Component {
   }
 
   componentDidMount = () =>{
-
     this.setTime()
-    
   };
 
   componentWillUnmount = () => {
@@ -62,7 +60,6 @@ class Timer extends React.Component {
       if(this.props.onTimeOut != null){
         this.props.onTimeOut()
       }
-      this.resetTime()
     } else{
       this.setState({width: newWidth})
     }
@@ -73,8 +70,8 @@ class Timer extends React.Component {
     
     return(
       <svg width="100%" height="70" xmlns="http://www.w3.org/2000/svg">
-        <rect className='timer' width="100%" height="100%" x="0" y="0" rx="0" ry="0" fill="rgb(110, 38, 14)" />
-        <rect className='timer' width={String(this.state.width-10) + '%'} height="100%" x="0" y="0" rx="0" ry="0" fill="rgb(204, 85, 0)" />
+        <rect className='timer' width="100%" height="100%" x="0" y="0" rx="0" ry="0" fill="#4c6543" />
+        <rect className='timer' width={String(this.state.width-10) + '%'} height="100%" x="0" y="0" rx="0" ry="0" fill="#6d8764" />
       </svg>
     )
 
