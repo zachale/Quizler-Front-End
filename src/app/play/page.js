@@ -24,29 +24,26 @@ async function getJsonResponse(url) {
 }
 
 
-function SubmitAnswerFrom({question, onSubmit}){
+function SubmitAnswerGrid({options, onSubmit}){
 
   const [answer, setAnswer] = useState('') 
+
+  buttons = options.map( (text) => {
+    <button onClick={handleSubmit} value={text} className='submitButton'>{text}</button>
+  })
   
   return (
     <>
-      <form onSubmit={handleSubmit} method="GET">
-        <input type="hidden"  id='question' name='question' value={question}></input>
-        <input className="submitAnswer" type="text" id='answer' name='answer' value={answer} onChange={(e) => setAnswer(e.target.value)}></input>
-        <button type="submit" className='submitButton'>
-          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check checkMark" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M5 12l5 5l10 -10" />
-          </svg>
-        </button>
-      </form>
+        <div className='grid grid-cols-2 gap-4'>
+          {buttons}
+        </div>
     </>
   )
 
   function handleSubmit(e){
     e.preventDefault()
     onSubmit(e)
-    setAnswer('')
+    console.log(e)
   }
 }
 
@@ -127,7 +124,7 @@ function App() {
           <h1>{question} = ?</h1>
           <h1>{String(score)}</h1>
           <p>{notif}</p>
-          <SubmitAnswerFrom question={question} onSubmit={updateAnswer}/>
+          <SubmitAnswerGrid/>
           <div><h1 className='highScore'>High Score: {highScore} 😎</h1></div>
         </div> 
     </div>
