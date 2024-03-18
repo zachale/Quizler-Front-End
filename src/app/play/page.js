@@ -23,10 +23,9 @@ async function getJsonResponse(url) {
 
 }
 
-
+// This is a component that will allow for controlled user input
+// Work in progress
 function SubmitAnswerGrid({options, onSubmit}){
-
-  const [answer, setAnswer] = useState('') 
 
   buttons = options.map( (text) => {
     <button onClick={handleSubmit} value={text} className='submitButton'>{text}</button>
@@ -48,14 +47,15 @@ function SubmitAnswerGrid({options, onSubmit}){
 }
 
 
-
+// This is the main app component
 function App() {
   const [question, setQuestion] = useState('')
   const [score, setScore] = useState(0)
   const [notif, setNotif] = useState('')
-  const [key, setKey] = useState(0)
   const [highScore, setHighScore] = useState(0)
 
+
+  // Request a new question from the API
   async function updateQuestion(e){
     await getJsonResponse(getQuestion)
       .then( promise => {
@@ -84,36 +84,39 @@ function App() {
     } else if(Boolean(e)){
       setScore(score.valueOf() + 1)
       updateQuestion()
-      setKey(key+1)
       setNotif("Correct! 😃👍✅")
     } else {
       setNotif("Incorrect 😔👎")
     }
   }
 
+
   if(question === ''){
     updateQuestion()
   }
 
+  // This is a call back function used for when the user's timer finishes
   function timeOut(){
 
+    // Detect a new highscore and save it in the cookies
     if(score > highScore){
       setHighScore(score)
       document.cookie = "hs=" + String(score)
     }
-    
-    setKey(key+1)
 
     setScore(0)
 
   }
 
 
+  // If a highscore is present in the browser cookies, read it on mount
   useEffect(() => {
     if(document.cookie.includes("hs")){
+
       var cookie = document.cookie
       const parameters = cookie.split('=')
       setHighScore(parameters[1])
+
     }
   },[])
 
